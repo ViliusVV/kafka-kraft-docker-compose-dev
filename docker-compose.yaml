@@ -1,0 +1,68 @@
+version: "3.8"
+
+# Common configuration for all Kafka nodes
+x-kafka: &kafka
+    image: local-kafka
+    build:
+      context: docker-build
+    dns:
+      - 8.8.8.8
+      - 4.4.4.4
+    restart: on-failure
+    networks:
+      - kafka-net
+
+services:
+  kafka01:
+    <<: *kafka
+    container_name: 01
+    ports:
+        - "29192:29192"
+    volumes:
+      - ./config/01/server.properties:/kafka/config/kraft/server.properties
+      - ./data/01:/kafka-data/kraft-combined-logs
+
+  kafka02:
+    <<: *kafka
+    container_name: 02
+    ports:
+        - "29292:29292"
+    volumes:
+      - ./config/02/server.properties:/kafka/config/kraft/server.properties
+      - ./data/02:/kafka-data/kraft-combined-logs
+
+  kafka03:
+    <<: *kafka
+    container_name: 03
+    ports:
+        - "29392:29392"
+    volumes:
+      - ./config/03/server.properties:/kafka/config/kraft/server.properties
+      - ./data/03:/kafka-data/kraft-combined-logs
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui
+    container_name: kafka-ui
+    ports:
+      - "8080:8080"
+    restart: always
+    environment:
+      - KAFKA_CLUSTERS_0_NAME=main
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=01:9092,02:9092,03:9092
+    networks:
+      - kafka-net
+        
+  kouncil:
+    image: consdata/kouncil:1.8
+    container_name: kafka-kouncil
+    ports:
+      - "8082:8080"
+    restart: always
+    environment:
+      - BOOTSTRAPSERVERS=01:9092,02:9092,03:9092
+    networks:
+      - kafka-net
+
+networks:
+    kafka-net:
+        external: true
