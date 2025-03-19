@@ -15,7 +15,7 @@ x-kafka: &kafka
 services:
   kafka01:
     <<: *kafka
-    container_name: 01
+    container_name: "01"
     ports:
         - "29192:29192"
     volumes:
@@ -24,7 +24,7 @@ services:
 
   kafka02:
     <<: *kafka
-    container_name: 02
+    container_name: "02"
     ports:
         - "29292:29292"
     volumes:
@@ -33,7 +33,7 @@ services:
 
   kafka03:
     <<: *kafka
-    container_name: 03
+    container_name: "03"
     ports:
         - "29392:29392"
     volumes:
