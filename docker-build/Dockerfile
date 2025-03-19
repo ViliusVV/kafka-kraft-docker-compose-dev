@@ -3,7 +3,7 @@ FROM openjdk:24-jdk-slim-bookworm
 RUN apt-get update && \
     apt-get install -y curl
          
-ENV KAFKA_VERSION 3.8.0
+ENV KAFKA_VERSION 4.0.0
 ENV SCALA_VERSION 2.13
 ENV KAFKA_CLUSTER_ID "ZTZjYWJhZjA2ZWE3MTFlZm"
 
