@@ -11,27 +11,27 @@ x-kafka: &kafka
       - kafka-net
 
 services:
-  kafka01:
+  kafka-01:
     <<: *kafka
-    container_name: "01"
+    container_name: "kafka-01"
     ports:
         - "29192:29192"
     volumes:
       - ./config/01/server.properties:/kafka/config/kraft/server.properties
       - ./data/01:/kafka-data/kraft-combined-logs
 
-  kafka02:
+  kafka-02:
     <<: *kafka
-    container_name: "02"
+    container_name: "kafka-02"
     ports:
         - "29292:29292"
     volumes:
       - ./config/02/server.properties:/kafka/config/kraft/server.properties
       - ./data/02:/kafka-data/kraft-combined-logs
 
-  kafka03:
+  kafka-03:
     <<: *kafka
-    container_name: "03"
+    container_name: "kafka-03"
     ports:
         - "29392:29392"
     volumes:
@@ -46,7 +46,7 @@ services:
     restart: always
     environment:
       - KAFKA_CLUSTERS_0_NAME=main
-      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=01:9092,02:9092,03:9092
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka-01:9092,kafka-02:9092,kafka-03:9092
     networks:
       - kafka-net
         
@@ -57,7 +57,7 @@ services:
       - "8082:8080"
     restart: always
     environment:
-      - BOOTSTRAPSERVERS=01:9092,02:9092,03:9092
+      - BOOTSTRAPSERVERS=kafka-01:9092,kafka-02:9092,kafka-03:9092
     networks:
       - kafka-net
 
