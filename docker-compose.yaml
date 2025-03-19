@@ -1,5 +1,3 @@
-version: "3.8"
-
 # Common configuration for all Kafka nodes
 x-kafka: &kafka
     image: local-kafka
